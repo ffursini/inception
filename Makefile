@@ -1,16 +1,17 @@
-all: build
+all: build up
+
 build:
-	docker-compose -f srcs/docker-compose.yml up -d --build
+	docker-compose -f srcs/docker-compose.yml build
+
+up:
+	docker-compose -f srcs/docker-compose.yml up -d
+
 down:
 	docker-compose -f srcs/docker-compose.yml down
-clean:
-	docker stop $$(docker ps -qa)
-	docker rm $$(docker ps -qa)
-	docker rmi -f $$(docker images -qa)
-	docker volume rm $$(docker volume ls -q)
-	docker network rm $$(docker network ls -q)
 
+clean: down
+	docker system prune -af
+	docker volume rm data_mariadb
+	docker volume rm data_wordpress
 
-
-
-.PHONY: all build down clean
+.PHONY: all build up down clean

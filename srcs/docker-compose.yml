@@ -41,7 +41,19 @@ services:
 networks:
   net:
     driver: bridge
-
 volumes:
   data_mariadb:
+    name: data_mariadb
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/fursini/data/mariadb
+      o: bind
+
   data_wordpress:
+    name: data_wordpress
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/fursini/data/wordpress
+      o: bind
