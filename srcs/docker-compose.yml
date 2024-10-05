@@ -3,6 +3,7 @@ version: '3.8'
 services:
   nginx:
     container_name: nginx
+    image: nginx
     depends_on:
       - wordpress
     build: ./requirements/nginx
@@ -16,6 +17,7 @@ services:
 
   mariadb:
     container_name: mariadb
+    image: mariadb
     build: ./requirements/mariadb
     volumes:
       - data_mariadb:/var/lib/mysql
@@ -27,6 +29,7 @@ services:
 
   wordpress:
     container_name: wordpress
+    image: wordpress
     depends_on:
       - mariadb
     build: ./requirements/wordpress
@@ -41,6 +44,7 @@ services:
 networks:
   net:
     driver: bridge
+
 volumes:
   data_mariadb:
     name: data_mariadb
@@ -57,3 +61,13 @@ volumes:
       type: none
       device: /home/fursini/data/wordpress
       o: bind
+
+# Description:
+# This docker-compose.yml file defines the multi-container Docker application:
+# - nginx: Web server container, exposes port 443 for HTTPS
+# - mariadb: Database container for WordPress
+# - wordpress: WordPress application container
+# It also sets up a custom network, volumes for persistent data storage,
+# and uses environment variables from the .env file.
+# The configuration ensures proper dependencies between services and
+# sets up volume bindings for data persistence.

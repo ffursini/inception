@@ -1,23 +1,31 @@
-# Usa l'immagine di base Alpine Linux 3.19
+# Dockerfile for Nginx container
+
+# Use Alpine Linux 3.19 as the base image
 FROM alpine:3.19
 
-# Aggiorna le repository e installa nginx e openssl
+# Update repositories and install nginx and openssl
 RUN apk update && apk add nginx openssl
 
-# Crea la directory per i certificati SSL
+# Create directory for SSL certificates
 RUN mkdir -p /etc/nginx/ssl
 
-# Genera un certificato SSL autogenerato usando openssl
+# Generate a self-signed SSL certificate using openssl
 RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
     -out /etc/nginx/ssl/fursini.crt \
     -keyout /etc/nginx/ssl/fursini.key \
     -subj "/C=IT/ST=Rome/L=Rome/O=42 Roma Luiss/OU=fursini/CN=fursini"
 
-# Copia il file di configurazione nginx personalizzato nella directory di configurazione di nginx
+# Copy the custom nginx configuration file to the nginx configuration directory
 COPY ./conf/default.conf /etc/nginx/http.d/default.conf
 
-# Esponi la porta 443 per le connessioni HTTPS
+# Expose port 443 for HTTPS connections
 EXPOSE 443
 
-# Avvia nginx in modalità daemon non demonizzata
+# Start nginx in non-daemon mode
 CMD ["nginx", "-g", "daemon off;"]
+
+# Description:
+# This Dockerfile sets up an Nginx container based on Alpine Linux.
+# It installs Nginx and OpenSSL, generates a self-signed SSL certificate,
+# and configures Nginx to use HTTPS. The container exposes port 443 for
+# secure connections and uses a custom Nginx configuration.

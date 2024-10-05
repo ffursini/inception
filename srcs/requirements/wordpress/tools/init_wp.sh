@@ -4,7 +4,7 @@ if [ -f ./wp-config.php ]
 then
 	echo "wordpress already downloaded"
 else
-	wget http://wordpress.org/latest.tar.gz
+	curl -O https://wordpress.org/latest.tar.gz
 	tar xfz latest.tar.gz
 	mv wordpress/* .
 	rm -rf latest.tar.gz
@@ -18,3 +18,10 @@ else
 fi
 
 exec "$@"
+
+# Description:
+# This script initializes WordPress in the container. It checks if WordPress
+# is already installed, and if not, it downloads the latest version, extracts it,
+# and sets up the wp-config.php file with the correct database credentials.
+# The script uses environment variables to configure WordPress, allowing for
+# easy customization of the setup.
